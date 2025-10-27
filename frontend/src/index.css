@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 13%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 13%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 13% 95%;
+    --secondary-foreground: 220 13% 13%;
+
+    --muted: 220 13% 95%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262 83% 58%;
+
+    --radius: 0.75rem;
+
+    --chat-user-bg: 262 83% 58%;
+    --chat-user-fg: 0 0% 100%;
+    --chat-ai-bg: 220 13% 97%;
+    --chat-ai-fg: 220 13% 13%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(245 75% 65%));
+    --shadow-elegant: 0 4px 20px -2px hsl(262 83% 58% / 0.15);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 220 15% 10%;
+    --foreground: 220 13% 95%;
+
+    --card: 220 15% 12%;
+    --card-foreground: 220 13% 95%;
+
+    --popover: 220 15% 12%;
+    --popover-foreground: 220 13% 95%;
+
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 18%;
+    --secondary-foreground: 220 13% 95%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 262 83% 58%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 262 83% 58%;
+
+    --chat-user-bg: 262 83% 58%;
+    --chat-user-fg: 0 0% 100%;
+    --chat-ai-bg: 220 15% 15%;
+    --chat-ai-fg: 220 13% 95%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(245 75% 65%));
+    --shadow-elegant: 0 4px 20px -2px hsl(262 83% 58% / 0.25);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.4s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
