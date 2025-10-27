@@ -5,6 +5,7 @@ import { MessageSquare } from "lucide-react";
 import { streamChat } from "@/utils/streamChat";
 import { useToast } from "@/hooks/use-toast";
 import { processFile, ProcessedFile } from "@/utils/fileProcessing";
+import { fetchFastApiReply } from "@/utils/fastApiClient";
 
 interface FileAttachment {
   name: string;
@@ -29,6 +30,7 @@ const Index = () => {
     },
   ]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasFetchedFastApiData, setHasFetchedFastApiData] = useState(false);
   const { toast } = useToast();
 
   const handleSendMessage = async (text: string, files?: File[]) => {
@@ -62,15 +64,41 @@ const Index = () => {
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
+    if (!hasFetchedFastApiData) {
+      try {
+        const fastApiReply = await fetchFastApiReply(text);
+        const assistantMessage: Message = {
+          id: `${Date.now()}-fastapi`,
+          text: fastApiReply,
+          isUser: false,
+        };
+        setMessages((prev) => [...prev, assistantMessage]);
+        setHasFetchedFastApiData(true);
+      } catch (error) {
+        console.error("FastAPI error:", error);
+        toast({
+          title: "FastAPI Error",
+          description:
+            error instanceof Error
+              ? error.message
+              : "Failed to retrieve data from FastAPI backend.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
     let assistantText = "";
     const assistantId = (Date.now() + 1).toString();
 
     // Build the message content including file contents
     let fullMessageContent = text;
-    
+
     if (processedFiles.length > 0) {
       fullMessageContent += "\n\n--- Attached Files ---\n";
-      
+
       for (const file of processedFiles) {
         if (file.type.startsWith('image/')) {
           fullMessageContent += `\n[Image: ${file.name}]\n`;
@@ -83,7 +111,7 @@ const Index = () => {
 
     const conversationHistory = [...messages, userMessage].map((msg) => {
       let content = msg.text;
-      
+
       // Include file contents from previous messages
       if (msg.processedFiles && msg.processedFiles.length > 0) {
         content += "\n\n--- Attached Files ---\n";
@@ -93,7 +121,7 @@ const Index = () => {
           }
         }
       }
-      
+
       return {
         role: msg.isUser ? ("user" as const) : ("assistant" as const),
         content,
