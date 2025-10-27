@@ -1,0 +1,12 @@
+# compiled files
+__pycache__/
+*.pyc
+
+# virtual environment
+venv/
+
+# environment variables
+.env
+
+# testing paper
+test.js
